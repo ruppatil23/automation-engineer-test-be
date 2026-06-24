@@ -13,8 +13,10 @@ import { getCurrentDateTime, addTime, isAfter } from "../../utils/datetime.js";
  * @param {string} userId
  * @returns {string} JWT token
  */
+const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-for-local-testing';
+
 const createJWTToken = (userId) => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+  return jwt.sign({ id: userId }, JWT_SECRET, {
     expiresIn: 3 * 24 * 60 * 60,
   });
 };

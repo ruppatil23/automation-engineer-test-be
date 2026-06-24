@@ -1,0 +1,70 @@
+name: API Automation Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  newman-tests:
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:latest
+        options: >-
+          --health-cmd mongosh
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 27017:27017
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Start backend server
+        run: npm run dev &
+        env:
+          MONGO_URI: mongodb://localhost:27017/shift-manager
+          PORT: 8001
+          JWT_SECRET: dev-secret-for-local-testing-please-change
+          FRONTEND_URL: http://localhost:5173
+
+      - name: Wait for backend to be ready
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:8001/api/docs > /dev/null; then
+              echo "Backend is ready"
+              exit 0
+            fi
+            echo "Waiting for backend... ($i/30)"
+            sleep 1
+          done
+          echo "Backend failed to start"
+          exit 1
+
+      - name: Install Newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+
+      - name: Run Newman Collection
+        run: |
+          newman run postman/collection.json \
+            -e postman/environment.json \
+            -r cli,htmlextra \
+            --reporter-htmlextra-export test-results/newman-report.html
+
+      - name: Upload Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: newman-report
+          path: test-results/newman-report.html

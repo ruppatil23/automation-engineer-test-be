@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Automation Engineer Test" tests="14" time="1.129">
+  <testsuite name="Authentication / Register User" id="496540d8-926a-4157-ab5b-8e44e8a1ef1a" timestamp="2026-06-23T23:51:35.991Z" tests="0" failures="0" errors="0" time="0.844"/>
+  <testsuite name="Authentication / Login User" id="61dde8c5-3493-451c-ba02-d7b0c9dec859" timestamp="2026-06-23T23:51:35.991Z" tests="3" failures="0" errors="0" time="0.172">
+    <testcase name="Status code is 200" time="0.172" classname="AuthenticationLoginUser"/>
+    <testcase name="Token exists" time="0.172" classname="AuthenticationLoginUser"/>
+    <testcase name="User role exists" time="0.172" classname="AuthenticationLoginUser"/>
+  </testsuite>
+  <testsuite name="Shift Management / Create Shift" id="6391e56b-9e67-46aa-a6ba-ffa3cd67ae71" timestamp="2026-06-23T23:51:35.991Z" tests="0" failures="0" errors="0" time="0.020"/>
+  <testsuite name="Shift Management / Get All Shifts" id="c411e1a0-1c6e-48d6-8d3f-be101a616733" timestamp="2026-06-23T23:51:35.991Z" tests="5" failures="5" errors="0" time="0.016">
+    <testcase name="Status code is 200" time="0.016" classname="ShiftManagementGetAllShifts">
+      <failure type="AssertionFailure" message="expected response to have status code 200 but got 403">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: ccb4dbde-3229-4f88-81e5-b47c4254b8a0.]]>
+        <![CDATA[Collection name: Automation Engineer Test.]]>
+        <![CDATA[Request name: Shift Management / Get All Shifts.]]>
+        <![CDATA[Test description: Status code is 200.]]>
+        <![CDATA[Error message: expected response to have status code 200 but got 403.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 200 but got 403
+   at Object.eval sandbox-script.js:1:4).]]>
+      </failure>
+    </testcase>
+    <testcase name="Shifts array exists" time="0.016" classname="ShiftManagementGetAllShifts">
+      <failure type="AssertionFailure" message="expected undefined to be an array">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: ccb4dbde-3229-4f88-81e5-b47c4254b8a0.]]>
+        <![CDATA[Collection name: Automation Engineer Test.]]>
+        <![CDATA[Request name: Shift Management / Get All Shifts.]]>
+        <![CDATA[Test description: Shifts array exists.]]>
+        <![CDATA[Error message: expected undefined to be an array.]]>
+        <![CDATA[Stacktrace: AssertionError: expected undefined to be an array
+   at Object.eval sandbox-script.js:2:4).]]>
+      </failure>
+    </testcase>
+    <testcase name="At least one shift exists" time="0.016" classname="ShiftManagementGetAllShifts">
+      <failure type="AssertionFailure" message="Cannot read properties of undefined (reading 'length')">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: ccb4dbde-3229-4f88-81e5-b47c4254b8a0.]]>
+        <![CDATA[Collection name: Automation Engineer Test.]]>
+        <![CDATA[Request name: Shift Management / Get All Shifts.]]>
+        <![CDATA[Test description: At least one shift exists.]]>
+        <![CDATA[Error message: Cannot read properties of undefined (reading 'length').]]>
+        <![CDATA[Stacktrace: TypeError: Cannot read properties of undefined (reading 'length')
+   at Object.eval sandbox-script.js:3:4).]]>
+      </failure>
+    </testcase>
+    <testcase name="Pagination exists" time="0.016" classname="ShiftManagementGetAllShifts">
+      <failure type="AssertionFailure" message="expected undefined to exist">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: ccb4dbde-3229-4f88-81e5-b47c4254b8a0.]]>
+        <![CDATA[Collection name: Automation Engineer Test.]]>
+        <![CDATA[Request name: Shift Management / Get All Shifts.]]>
+        <![CDATA[Test description: Pagination exists.]]>
+        <![CDATA[Error message: expected undefined to exist.]]>
+        <![CDATA[Stacktrace: AssertionError: expected undefined to exist
+   at Object.eval sandbox-script.js:4:4).]]>
+      </failure>
+    </testcase>
+    <testcase name="Current page is returned" time="0.016" classname="ShiftManagementGetAllShifts">
+      <failure type="AssertionFailure" message="Cannot read properties of undefined (reading 'currentPage')">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: ccb4dbde-3229-4f88-81e5-b47c4254b8a0.]]>
+        <![CDATA[Collection name: Automation Engineer Test.]]>
+        <![CDATA[Request name: Shift Management / Get All Shifts.]]>
+        <![CDATA[Test description: Current page is returned.]]>
+        <![CDATA[Error message: Cannot read properties of undefined (reading 'currentPage').]]>
+        <![CDATA[Stacktrace: TypeError: Cannot read properties of undefined (reading 'currentPage')
+   at Object.eval sandbox-script.js:5:4).]]>
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Shift Management / Get My Shifts" id="e77ddff5-417d-46b6-b67f-23b9c24ae7d4" timestamp="2026-06-23T23:51:35.991Z" tests="2" failures="1" errors="0" time="0.018">
+    <testcase name="Status code is 200" time="0.018" classname="ShiftManagementGetMyShifts">
+      <failure type="AssertionFailure" message="expected response to have status code 200 but got 403">
+        <![CDATA[Failed 1 times.]]>
+        <![CDATA[Collection JSON ID: ccb4dbde-3229-4f88-81e5-b47c4254b8a0.]]>
+        <![CDATA[Collection name: Automation Engineer Test.]]>
+        <![CDATA[Request name: Shift Management / Get My Shifts.]]>
+        <![CDATA[Test description: Status code is 200.]]>
+        <![CDATA[Error message: expected response to have status code 200 but got 403.]]>
+        <![CDATA[Stacktrace: AssertionError: expected response to have status code 200 but got 403
+   at Object.eval sandbox-script.js:1:5).]]>
+      </failure>
+    </testcase>
+    <testcase name="Response returned" time="0.018" classname="ShiftManagementGetMyShifts"/>
+  </testsuite>
+  <testsuite name="Shift Management / Clock In" id="0cc56d36-768e-4613-824e-c5bf00e2f342" timestamp="2026-06-23T23:51:35.991Z" tests="0" failures="0" errors="0" time="0.012"/>
+  <testsuite name="Shift Management / clock out" id="3be7c2a1-0ccf-46c9-8a52-711c45b8a5a6" timestamp="2026-06-23T23:51:35.991Z" tests="0" failures="0" errors="0" time="0.005"/>
+  <testsuite name="Shift Management / Delete shift" id="793b3e27-942b-4571-bc8f-197dc7ab8780" timestamp="2026-06-23T23:51:35.991Z" tests="0" failures="0" errors="0" time="0.005"/>
+  <testsuite name="Negative Tests / Invalid Login" id="0c7d4fd0-a556-4e60-9e3a-61a360ab1c12" timestamp="2026-06-23T23:51:35.991Z" tests="0" failures="0" errors="0" time="0.012"/>
+  <testsuite name="Negative Tests / Missing Token" id="b0305b73-9b97-4533-be7f-c2f6b178ed79" timestamp="2026-06-23T23:51:35.991Z" tests="0" failures="0" errors="0" time="0.006"/>
+  <testsuite name="Negative Tests / Invalid JWT Token" id="c2977ce8-f4ff-416f-bbb6-c5e941f5e2fb" timestamp="2026-06-23T23:51:35.991Z" tests="0" failures="0" errors="0" time="0.004"/>
+  <testsuite name="Negative Tests / Invalid Payload" id="f6544a62-0d80-447c-bd03-77263a6803c1" timestamp="2026-06-23T23:51:35.991Z" tests="0" failures="0" errors="0" time="0.011"/>
+  <testsuite name="Negative Tests / Delete Missing Shift" id="74d1256d-d41c-4f08-94e6-0671eb84c541" timestamp="2026-06-23T23:51:35.991Z" tests="0" failures="0" errors="0" time="0.004"/>
+  <testsuite name="New Request" id="f9566167-d332-4963-8fc8-b43d61f2ae3b" timestamp="2026-06-23T23:51:35.991Z" tests="0" failures="0" errors="1" time="0.000">
+    <system-err><![CDATA[Iteration: 0
+RequestError: Error: runtime:extensions~request: request url is empty
+    at Requester.request (C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\postman-runtime\lib\requester\requester.js:421:26)
+    at C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\postman-runtime\lib\runner\extensions\http-request.command.js:156:37
+    at Requester.create (C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\postman-runtime\lib\requester\requester.js:508:16)
+    at RequesterPool.create (C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\postman-runtime\lib\requester\requester-pool.js:67:22)
+    at C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\postman-runtime\lib\runner\extensions\http-request.command.js:105:32
+    at C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\async\dist\async.js:252:13
+    at wrapper (C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\async\dist\async.js:273:20)
+    at replenish (C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\async\dist\async.js:443:29)
+    at C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\async\dist\async.js:453:13
+    at eachOfLimit (C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\async\dist\async.js:479:36)
+    at awaitable (C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\async\dist\async.js:212:32)
+    at eachOfSeries (C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\async\dist\async.js:815:16)
+    at awaitable (C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\async\dist\async.js:212:32)
+    at _asyncMap (C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\async\dist\async.js:245:16)
+    at mapSeries (C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\async\dist\async.js:839:16)
+    at awaitable (C:\Users\lenovo\Desktop\automation-test\automation-engineer-test-be\node_modules\async\dist\async.js:212:32)
+
+---
+]]></system-err>
+  </testsuite>
+</testsuites>
