@@ -30,14 +30,40 @@ jobs:
         with:
           node-version: 18
 
+      # -----------------------------
+      # INSTALL DEPENDENCIES (FIXED)
+      # -----------------------------
       - name: Install dependencies
-        run: npm install
+        run: npm ci || npm install
 
-      - name: Start backend
+      # -----------------------------
+      # START BACKEND
+      # -----------------------------
+      - name: Start backend server
         run: |
-          nohup npm run dev &
-          sleep 15
+          nohup npm run dev > server.log 2>&1 &
+          
+      # -----------------------------
+      # WAIT FOR BACKEND (NO SLEEP MAGIC)
+      # -----------------------------
+      - name: Wait for backend to be ready
+        run: |
+          echo "Waiting for backend..."
+          for i in {1..30}; do
+            if curl -s http://localhost:8001/health || curl -s http://localhost:8001; then
+              echo "Backend is ready"
+              exit 0
+            fi
+            echo "Waiting... attempt $i"
+            sleep 2
+          done
+          echo "Backend failed to start"
+          cat server.log
+          exit 1
 
+      # -----------------------------
+      # BOOTSTRAP STEPS
+      # -----------------------------
       - name: Ensure Admin Exists
         run: node scripts/ensureAdmin.js
 
@@ -47,5 +73,8 @@ jobs:
       - name: Register Worker User
         run: node scripts/registerWorker.js
 
+      # -----------------------------
+      # RUN TESTS
+      # -----------------------------
       - name: Run API Tests
-        run: npm run test:api
+        run: npm run test:postman
