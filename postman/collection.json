@@ -94,7 +94,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"adminemail\": \"{{adminemail}}\",\r\n  \"password\": \"StrongPass123!\"\r\n}",
+              "raw": "{\r\n  \"email\": \"{{adminEmail}}\",\r\n  \"password\": \"{{adminPassword}}\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"

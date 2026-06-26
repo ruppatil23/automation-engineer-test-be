@@ -14,6 +14,8 @@ async function loginAdmin() {
 
   const token = res.data.token;
   const userId = res.data.user.id;
+  const adminEmail = ADMIN_EMAIL || "";
+  const adminPassword = ADMIN_PASSWORD || "";
 
   console.log("Admin login successful");
 
@@ -38,6 +40,8 @@ async function loginAdmin() {
   }
 
   const updatedValues = [
+    { key: "adminEmail", value: adminEmail, type: "text" },
+    { key: "adminPassword", value: adminPassword, type: "text" },
     { key: "token", value: token, type: "text" },
     { key: "adminUserId", value: userId, type: "text" },
     { key: "baseUrl", value: BASE_URL, type: "text" },
@@ -49,13 +53,11 @@ async function loginAdmin() {
   }, {});
 
   updatedValues.forEach((updated) => {
-    if (valuesByKey[updated.key]) {
-      valuesByKey[updated.key].value = updated.value;
-    } else {
-      env.values.push(updated);
-    }
+    valuesByKey[updated.key] = valuesByKey[updated.key] || updated;
+    valuesByKey[updated.key].value = updated.value;
   });
 
+  env.values = Object.values(valuesByKey);
   fs.writeFileSync(envPath, JSON.stringify(env, null, 2));
 
   console.log("env.json updated");
