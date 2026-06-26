@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = process.env.BASE_URL || "http://localhost:8001";
+const BASE_URL = process.env.BASE_URL || "http://127.0.0.1:8001";
 
 function randomEmail() {
   return `worker_${Date.now()}@test.com`;

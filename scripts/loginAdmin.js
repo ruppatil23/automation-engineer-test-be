@@ -1,7 +1,7 @@
 import axios from "axios";
 import fs from "fs";
 
-const BASE_URL = process.env.BASE_URL || "http://localhost:8001";
+const BASE_URL = process.env.BASE_URL || "http://127.0.0.1:8001";
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
