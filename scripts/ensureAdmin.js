@@ -6,44 +6,67 @@ import UserModel from "../src/models/user.model.js";
 dotenv.config();
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/testdb";
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@test.com";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "AdminPass123!";
 
-async function ensureAdmin() {
-  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
-    throw new Error("ADMIN_EMAIL and ADMIN_PASSWORD must be set");
-  }
+async function connectDatabase() {
+  console.log("Connecting to MongoDB...");
+  await mongoose.connect(MONGO_URI);
+  console.log("MongoDB connected");
+}
 
-  await mongoose.connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-
-  const existingUser = await UserModel.findOne({ email: ADMIN_EMAIL });
-
-  if (existingUser) {
-    if (existingUser.role === "admin") {
-      console.log("? Admin already exists");
-      return;
-    }
-
-    existingUser.role = "admin";
-    await existingUser.save();
-    console.log("? Existing user promoted to admin");
-    return;
-  }
-
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, salt);
-
-  await UserModel.create({
-    name: "Admin User",
+function getAdminCredentials() {
+  return {
     email: ADMIN_EMAIL,
+    password: ADMIN_PASSWORD,
+  };
+}
+
+async function promoteUserToAdmin(user) {
+  user.role = "admin";
+  await user.save();
+  console.log("✅ Existing user promoted to admin:", user.email);
+  return user;
+}
+
+async function createAdminUser(email, password) {
+  const salt = await bcrypt.genSalt(12);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  const admin = await UserModel.create({
+    name: "Admin User",
+    email,
     password: hashedPassword,
     role: "admin",
   });
-
-  console.log("? Admin created");
+  console.log("✅ Admin created:", email);
+  return admin;
 }
 
-await ensureAdmin();
+async function ensureAdmin() {
+  const { email, password } = getAdminCredentials();
+  console.log("Admin credentials:", { email, password: password ? "*hidden*" : "(none)" });
+
+  await connectDatabase();
+
+  try {
+    const adminUser = await UserModel.findOne({ email });
+    if (adminUser) {
+      return adminUser.role === "admin"
+        ? (console.log("✅ Admin already exists:"), adminUser)
+        : await promoteUserToAdmin(adminUser);
+    }
+
+    return await createAdminUser(email, password);
+  } finally {
+    await mongoose.disconnect();
+    console.log("MongoDB disconnected");
+  }
+}
+
+try {
+  await ensureAdmin();
+  process.exit(0);
+} catch (error) {
+  console.error("Failed to ensure admin:", error);
+  process.exit(1);
+}
