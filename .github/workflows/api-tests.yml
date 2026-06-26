@@ -6,65 +6,46 @@ on:
       - main
 
 jobs:
-  newman-tests:
+  test:
     runs-on: ubuntu-latest
+
     services:
-      mongodb:
-        image: mongo:latest
-        options: >-
-          --health-cmd mongosh
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+      mongo:
+        image: mongo:6
         ports:
           - 27017:27017
 
-    steps:
-      - uses: actions/checkout@v4
+    env:
+      MONGO_URI: mongodb://localhost:27017/testdb
+      BASE_URL: http://localhost:8001
+      ADMIN_EMAIL: john@example.com
+      ADMIN_PASSWORD: Admin@123
 
-      - uses: actions/setup-node@v4
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
       - name: Install dependencies
         run: npm install
 
-      - name: Start backend server
-        run: npm run dev &
-        env:
-          MONGO_URI: mongodb://localhost:27017/shift-manager
-          PORT: 8001
-          JWT_SECRET: dev-secret-for-local-testing-please-change
-          FRONTEND_URL: http://localhost:5173
-
-      - name: Wait for backend to be ready
+      - name: Start backend
         run: |
-          for i in {1..30}; do
-            if curl -s http://localhost:8001/api/docs > /dev/null; then
-              echo "Backend is ready"
-              exit 0
-            fi
-            echo "Waiting for backend... ($i/30)"
-            sleep 1
-          done
-          echo "Backend failed to start"
-          exit 1
+          nohup npm run dev &
+          sleep 15
 
-      - name: Install Newman
-        run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
+      - name: Ensure Admin Exists
+        run: node scripts/ensureAdmin.js
 
-      - name: Run Newman Collection
-        run: |
-          newman run postman/collection.json \
-            -e postman/environment.json \
-            -r cli,htmlextra \
-            --reporter-htmlextra-export test-results/newman-report.html
+      - name: Login Admin + Update Env
+        run: node scripts/loginAdmin.js
 
-      - name: Upload Report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: newman-report
-          path: test-results/newman-report.html
+      - name: Register Worker User
+        run: node scripts/registerWorker.js
+
+      - name: Run API Tests
+        run: npm run test:api
