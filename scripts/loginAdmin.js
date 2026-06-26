@@ -37,10 +37,23 @@ async function loginAdmin() {
     };
   }
 
-  env.values = env.values.map((v) => {
-    if (v.key === "token") v.value = token;
-    if (v.key === "adminUserId") v.value = userId;
-    return v;
+  const updatedValues = [
+    { key: "token", value: token, type: "text" },
+    { key: "adminUserId", value: userId, type: "text" },
+    { key: "baseUrl", value: BASE_URL, type: "text" },
+  ];
+
+  const valuesByKey = env.values.reduce((acc, v) => {
+    acc[v.key] = v;
+    return acc;
+  }, {});
+
+  updatedValues.forEach((updated) => {
+    if (valuesByKey[updated.key]) {
+      valuesByKey[updated.key].value = updated.value;
+    } else {
+      env.values.push(updated);
+    }
   });
 
   fs.writeFileSync(envPath, JSON.stringify(env, null, 2));
