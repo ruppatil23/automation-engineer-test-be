@@ -22,59 +22,72 @@ jobs:
       ADMIN_PASSWORD: Admin@123
 
     steps:
+      # -----------------------------
+      # Checkout code
+      # -----------------------------
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      # -----------------------------
+      # Setup Node
+      # -----------------------------
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
       # -----------------------------
-      # INSTALL DEPENDENCIES (FIXED)
+      # CLEAN INSTALL (FIX FOR AXIOS ERROR)
       # -----------------------------
       - name: Install dependencies
-        run: npm ci || npm install
+        run: npm ci
 
       # -----------------------------
-      # START BACKEND
+      # Start backend
       # -----------------------------
       - name: Start backend server
         run: |
           nohup npm run dev > server.log 2>&1 &
-          
+
       # -----------------------------
-      # WAIT FOR BACKEND (NO SLEEP MAGIC)
+      # Wait for backend readiness
       # -----------------------------
-      - name: Wait for backend to be ready
+      - name: Wait for backend
         run: |
           echo "Waiting for backend..."
           for i in {1..30}; do
-            if curl -s http://localhost:8001/health || curl -s http://localhost:8001; then
+            if curl -s http://localhost:8001 || curl -s http://localhost:8001/health; then
               echo "Backend is ready"
               exit 0
             fi
-            echo "Waiting... attempt $i"
+            echo "Attempt $i - waiting..."
             sleep 2
           done
+
           echo "Backend failed to start"
           cat server.log
           exit 1
 
       # -----------------------------
-      # BOOTSTRAP STEPS
+      # Bootstrap Admin
       # -----------------------------
       - name: Ensure Admin Exists
         run: node scripts/ensureAdmin.js
 
+      # -----------------------------
+      # Login Admin + Update Env
+      # -----------------------------
       - name: Login Admin + Update Env
         run: node scripts/loginAdmin.js
 
+      # -----------------------------
+      # Create Worker User
+      # -----------------------------
       - name: Register Worker User
         run: node scripts/registerWorker.js
 
       # -----------------------------
-      # RUN TESTS
+      # Run Postman Tests
       # -----------------------------
       - name: Run API Tests
         run: npm run test:postman
