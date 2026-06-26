@@ -128,11 +128,12 @@
               "script": {
                 "exec": [
                   "const now = new Date();\r",
-                  "const start = new Date(now.getTime() + 30 * 60 * 1000);\r",
-                  "const finish = new Date(start.getTime() + 30 * 60 * 1000);\r",
+                  "const start = new Date(now.getTime() + 5 * 60 * 1000);\r",
+                  "const finish = new Date(start.getTime() + 60 * 60 * 1000);\r",
                   "const pad = (value) => value.toString().padStart(2, '0');\r",
                   "const formatTime = (date) => `${pad(date.getHours())}:${pad(date.getMinutes())}`;\r",
-                  "pm.environment.set('shiftDate', start.toISOString());\r",
+                  "const shiftDate = `${start.getFullYear()}-${pad(start.getMonth() + 1)}-${pad(start.getDate())}`;\r",
+                  "pm.environment.set('shiftDate', shiftDate);\r",
                   "pm.environment.set('shiftStartTime', formatTime(start));\r",
                   "pm.environment.set('shiftFinishTime', formatTime(finish));\r"
                 ],
@@ -573,14 +574,6 @@
           "response": []
         }
       ]
-    },
-    {
-      "name": "New Request",
-      "request": {
-        "method": "GET",
-        "header": []
-      },
-      "response": []
     }
   ]
 }
