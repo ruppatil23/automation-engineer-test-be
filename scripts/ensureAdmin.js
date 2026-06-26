@@ -17,6 +17,7 @@ async function ensureAdmin() {
     console.log("⚠️ Admin not found. Creating...");
 
     await axios.post(`${BASE_URL}/api/user/register`, {
+      name: "Admin User",
       email: ADMIN_EMAIL,
       password: ADMIN_PASSWORD,
       role: "admin",
