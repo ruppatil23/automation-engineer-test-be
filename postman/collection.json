@@ -124,6 +124,24 @@
           "name": "Create Shift",
           "event": [
             {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const now = new Date();\r",
+                  "const start = new Date(now.getTime() + 30 * 60 * 1000);\r",
+                  "const finish = new Date(start.getTime() + 30 * 60 * 1000);\r",
+                  "const pad = (value) => value.toString().padStart(2, '0');\r",
+                  "const formatTime = (date) => `${pad(date.getHours())}:${pad(date.getMinutes())}`;\r",
+                  "pm.environment.set('shiftDate', start.toISOString());\r",
+                  "pm.environment.set('shiftStartTime', formatTime(start));\r",
+                  "pm.environment.set('shiftFinishTime', formatTime(finish));\r"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
               "listen": "test",
               "script": {
                 "exec": [
@@ -157,7 +175,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"title\": \"Morning Shift\",\r\n  \"role\": \"worker\",\r\n  \"typeOfShift\": [\"Weekend\"],\r\n  \"user\": \"{{userId}}\",\r\n  \"startTime\": \"21:30\",\r\n  \"finishTime\": \"22:00\",\r\n  \"numOfShiftsPerDay\": 1,\r\n  \"location\": {\r\n    \"name\": \"London Office\",\r\n    \"address\": \"123 Test Street\",\r\n    \"postCode\": \"SW1A 1AA\",\r\n    \"cordinates\": {\r\n      \"longitude\": 0.1276,\r\n      \"latitude\": 51.5072\r\n    }\r\n  },\r\n  \"date\": \"2026-06-22T15:35:44.437Z\"\r\n}",
+              "raw": "{\r\n  \"title\": \"Morning Shift\",\r\n  \"role\": \"worker\",\r\n  \"typeOfShift\": [\"Weekend\"],\r\n  \"user\": \"{{userId}}\",\r\n  \"startTime\": \"{{shiftStartTime}}\",\r\n  \"finishTime\": \"{{shiftFinishTime}}\",\r\n  \"numOfShiftsPerDay\": 1,\r\n  \"location\": {\r\n    \"name\": \"London Office\",\r\n    \"address\": \"123 Test Street\",\r\n    \"postCode\": \"SW1A 1AA\",\r\n    \"cordinates\": {\r\n      \"longitude\": 0.1276,\r\n      \"latitude\": 51.5072\r\n    }\r\n  },\r\n  \"date\": \"{{shiftDate}}\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
