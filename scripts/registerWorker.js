@@ -10,6 +10,7 @@ async function registerWorker() {
   const email = randomEmail();
 
   const res = await axios.post(`${BASE_URL}/api/user/register`, {
+    name: `Worker ${Date.now()}`,
     email,
     password: "Password123!",
     role: "worker",
