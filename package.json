@@ -13,7 +13,7 @@
     "coverage": "npm run test:coverage",
     "coverage:open": "npm run coverage && open coverage/index.html",
     "create-admin": "node scripts/create-admin.js",
-    "test:postman": "newman run postman/collection.json -e postman/environment.json --reporters cli,junit --reporter-junit-export test-results/newman-report.xml"
+    "test:postman": "newman run postman/collection.json -e postman/env.json --reporters cli,junit --reporter-junit-export test-results/newman-report.xml"
   },
   "author": "",
   "license": "ISC",

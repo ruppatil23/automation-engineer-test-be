@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import { AuthenticationError } from "../utils/errors/auth.error.js";
 import * as process from "node:process";
 
+const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-for-local-testing";
+
 /** @typedef {import('express').Request} Request */
 /** @typedef {import('express').Response} Response */
 /** @typedef {import('express').NextFunction} NextFunction */
@@ -37,7 +39,7 @@ const requireAuthMiddleware = async (req, res, next) => {
       );
     }
 
-    const decoded = jwt.verify(token[1], process.env.JWT_SECRET);
+    const decoded = jwt.verify(token[1], JWT_SECRET);
     req.user = decoded;
     req.token = token;
     next();

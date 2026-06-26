@@ -69,5 +69,5 @@ The CI workflow provides these values as environment variables:
 
 ## Notes
 
-- `test:postman` runs the Postman collection defined in `postman/collection.json` using the environment `postman/environment.json`.
+- `test:postman` runs the Postman collection defined in `postman/collection.json` using the environment `postman/env.json`.
 - The bootstrap scripts prepare test data before Newman executes the API tests.

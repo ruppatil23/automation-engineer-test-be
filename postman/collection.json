@@ -42,11 +42,12 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/user/register",
+              "raw": "{{baseUrl}}/api/user/register",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "user",
                 "register"
               ]
@@ -93,7 +94,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"adminemail\": \"{{adminemail}}\",\r\n  \"password\": \"StrongPass123!\"\r\n}",
+              "raw": "{\r\n  \"email\": \"{{adminEmail}}\",\r\n  \"password\": \"{{adminPassword}}\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -101,11 +102,12 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/user/login",
+              "raw": "{{baseUrl}}/api/user/login",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "user",
                 "login"
               ]
@@ -121,6 +123,25 @@
         {
           "name": "Create Shift",
           "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const now = new Date();\r",
+                  "const start = new Date(now.getTime() + 5 * 60 * 1000);\r",
+                  "const finish = new Date(start.getTime() + 60 * 60 * 1000);\r",
+                  "const pad = (value) => value.toString().padStart(2, '0');\r",
+                  "const formatTime = (date) => `${pad(date.getHours())}:${pad(date.getMinutes())}`;\r",
+                  "const shiftDate = `${start.getFullYear()}-${pad(start.getMonth() + 1)}-${pad(start.getDate())}`;\r",
+                  "pm.environment.set('shiftDate', shiftDate);\r",
+                  "pm.environment.set('shiftStartTime', formatTime(start));\r",
+                  "pm.environment.set('shiftFinishTime', formatTime(finish));\r"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
             {
               "listen": "test",
               "script": {
@@ -155,7 +176,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"title\": \"Morning Shift\",\r\n  \"role\": \"worker\",\r\n  \"typeOfShift\": [\"Weekend\"],\r\n  \"user\": \"{{userId}}\",\r\n  \"startTime\": \"21:30\",\r\n  \"finishTime\": \"22:00\",\r\n  \"numOfShiftsPerDay\": 1,\r\n  \"location\": {\r\n    \"name\": \"London Office\",\r\n    \"address\": \"123 Test Street\",\r\n    \"postCode\": \"SW1A 1AA\",\r\n    \"cordinates\": {\r\n      \"longitude\": 0.1276,\r\n      \"latitude\": 51.5072\r\n    }\r\n  },\r\n  \"date\": \"2026-06-22T15:35:44.437Z\"\r\n}",
+              "raw": "{\r\n  \"title\": \"Morning Shift\",\r\n  \"role\": \"worker\",\r\n  \"typeOfShift\": [\"Weekend\"],\r\n  \"user\": \"{{userId}}\",\r\n  \"startTime\": \"{{shiftStartTime}}\",\r\n  \"finishTime\": \"{{shiftFinishTime}}\",\r\n  \"numOfShiftsPerDay\": 1,\r\n  \"location\": {\r\n    \"name\": \"London Office\",\r\n    \"address\": \"123 Test Street\",\r\n    \"postCode\": \"SW1A 1AA\",\r\n    \"cordinates\": {\r\n      \"longitude\": 0.1276,\r\n      \"latitude\": 51.5072\r\n    }\r\n  },\r\n  \"date\": \"{{shiftDate}}\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -163,11 +184,12 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/shifts",
+              "raw": "{{baseUrl}}/api/shifts",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "shifts"
               ]
             }
@@ -223,11 +245,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/shifts",
+              "raw": "{{baseUrl}}/api/shifts",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "shifts"
               ]
             }
@@ -271,11 +294,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/shifts/{{shiftId}}",
+              "raw": "{{baseUrl}}/api/shifts/{{shiftId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "shifts",
                 "{{shiftId}}"
               ]
@@ -299,11 +323,12 @@
             "method": "PATCH",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/shifts/{{shiftId}}/clock-in",
+              "raw": "{{baseUrl}}/api/shifts/{{shiftId}}/clock-in",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "shifts",
                 "{{shiftId}}",
                 "clock-in"
@@ -328,11 +353,12 @@
             "method": "PATCH",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/shifts/{{shiftId}}/clock-out",
+              "raw": "{{baseUrl}}/api/shifts/{{shiftId}}/clock-out",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "shifts",
                 "{{shiftId}}",
                 "clock-out"
@@ -357,11 +383,12 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/shifts/{{shiftId}}",
+              "raw": "{{baseUrl}}/api/shifts/{{shiftId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "shifts",
                 "{{shiftId}}"
               ]
@@ -389,11 +416,12 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/user/login",
+              "raw": "{{baseUrl}}/api/user/login",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "user",
                 "login"
               ]
@@ -407,11 +435,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/shifts/{{shiftId}}",
+              "raw": "{{baseUrl}}/api/shifts/{{shiftId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "shifts",
                 "{{shiftId}}"
               ]
@@ -465,11 +494,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/shifts/{{shiftId}}",
+              "raw": "{{baseUrl}}/api/shifts/{{shiftId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "shifts",
                 "{{shiftId}}"
               ]
@@ -502,11 +532,12 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/shifts",
+              "raw": "{{baseUrl}}/api/shifts",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "shifts"
               ]
             }
@@ -529,11 +560,12 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/shifts/{{fakeShiftId}}",
+              "raw": "{{baseUrl}}/api/shifts/{{fakeShiftId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "shifts",
                 "{{fakeShiftId}}"
               ]
@@ -542,14 +574,6 @@
           "response": []
         }
       ]
-    },
-    {
-      "name": "New Request",
-      "request": {
-        "method": "GET",
-        "header": []
-      },
-      "response": []
     }
   ]
 }

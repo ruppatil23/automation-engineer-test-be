@@ -17,7 +17,8 @@ jobs:
 
     env:
       MONGO_URI: mongodb://localhost:27017/testdb
-      BASE_URL: http://localhost:8001
+      BASE_URL: http://127.0.0.1:8001
+      JWT_SECRET: dev-secret-for-local-testing
       ADMIN_EMAIL: john@example.com
       ADMIN_PASSWORD: Admin@123
 
@@ -41,7 +42,7 @@ jobs:
       # -----------------------------
       - name: Start backend server
         run: |
-          nohup npm run dev > server.log 2>&1 &
+          nohup npm start > server.log 2>&1 &
           
       # -----------------------------
       # WAIT FOR BACKEND (NO SLEEP MAGIC)
@@ -50,7 +51,7 @@ jobs:
         run: |
           echo "Waiting for backend..."
           for i in {1..30}; do
-            if curl -s http://localhost:8001/health || curl -s http://localhost:8001; then
+            if curl -s http://127.0.0.1:8001/health || curl -s http://127.0.0.1:8001; then
               echo "Backend is ready"
               exit 0
             fi
