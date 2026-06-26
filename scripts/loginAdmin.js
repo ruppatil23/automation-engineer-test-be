@@ -1,6 +1,7 @@
-const axios = require("axios");
-const fs = require("fs");
-const { BASE_URL } = require("./utils");
+import axios from "axios";
+import fs from "fs";
+
+const BASE_URL = process.env.BASE_URL || "http://localhost:8001";
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
@@ -14,7 +15,7 @@ async function loginAdmin() {
   const token = res.data.token;
   const userId = res.data.user.id;
 
-  console.log("✅ Admin login successful");
+  console.log("Admin login successful");
 
   const envPath = "./postman/env.json";
   const env = JSON.parse(fs.readFileSync(envPath, "utf-8"));
@@ -27,7 +28,7 @@ async function loginAdmin() {
 
   fs.writeFileSync(envPath, JSON.stringify(env, null, 2));
 
-  console.log("✅ env.json updated (token + adminUserId)");
+  console.log("env.json updated");
 }
 
-loginAdmin();
+await loginAdmin();

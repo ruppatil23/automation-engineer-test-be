@@ -1,5 +1,6 @@
-const axios = require("axios");
-const { BASE_URL } = require("./utils");
+import axios from "axios";
+
+const BASE_URL = process.env.BASE_URL || "http://localhost:8001";
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
@@ -25,4 +26,4 @@ async function ensureAdmin() {
   }
 }
 
-ensureAdmin();
+await ensureAdmin();
