@@ -19,10 +19,13 @@ if (process.env.NODE_ENV !== "test") {
 const app = express();
 
 const port = process.env.PORT || 8001;
+const host = process.env.HOST || "0.0.0.0";
 
 //middlewares
 app.use(express.json());
 app.use(cors());
+// health probe
+app.get("/health", (req, res) => res.status(200).send("ok"));
 //api endpoints
 app.use("/api/user", authRouter);
 app.use("/api/shifts", shiftsRouter);
@@ -33,7 +36,7 @@ app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(errorHandlerMiddleware);
 
-app.listen(port, () => console.log(`Listening on localhost:${port}`));
+app.listen(port, host, () => console.log(`Listening on ${host}:${port}`));
 
 const gracefulShutdown = async (signal) => {
   console.log(`${signal}: Shutting down gracefully...`);
