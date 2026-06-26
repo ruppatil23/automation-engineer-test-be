@@ -18,7 +18,24 @@ async function loginAdmin() {
   console.log("Admin login successful");
 
   const envPath = "./postman/env.json";
-  const env = JSON.parse(fs.readFileSync(envPath, "utf-8"));
+  let env;
+
+  try {
+    env = JSON.parse(fs.readFileSync(envPath, "utf-8"));
+  } catch (error) {
+    console.warn(`Warning: could not read ${envPath}. Recreating environment file.`);
+    env = {
+      id: "automation-engineer-test-be-env",
+      name: "Automation Engineer Test BE",
+      values: [
+        { key: "token", value: "", type: "text" },
+        { key: "adminUserId", value: "", type: "text" },
+      ],
+      _postman_variable_scope: "environment",
+      _postman_exported_at: new Date().toISOString(),
+      _postman_exported_using: "Postman/10.0.0",
+    };
+  }
 
   env.values = env.values.map((v) => {
     if (v.key === "token") v.value = token;
